@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RSG Saloon Premium</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <div id="app" class="hidden">
+        <!-- Main Container -->
+        <div class="saloon-container">
+            <!-- Header -->
+            <div class="saloon-header">
+                <div class="header-ornament left"></div>
+                <div class="header-content">
+                    <i class="fas fa-beer-mug-empty header-icon"></i>
+                    <h1 id="saloonName">Saloon</h1>
+                    <p class="subtitle" id="saloonSubtitle">Premium Western Experience</p>
+                </div>
+                <div class="header-ornament right"></div>
+                <button class="close-btn" onclick="closeMenu()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <!-- Tabs Navigation -->
+            <div class="tabs-container">
+                <button class="tab active" data-tab="shop" onclick="switchTab('shop')">
+                    <i class="fas fa-store"></i>
+                    <span>Shop</span>
+                </button>
+                <button class="tab employee-only" data-tab="crafting" onclick="switchTab('crafting')">
+                    <i class="fas fa-hammer"></i>
+                    <span>Crafting</span>
+                </button>
+                <button class="tab employee-only" data-tab="storage" onclick="switchTab('storage')">
+                    <i class="fas fa-warehouse"></i>
+                    <span>Storage</span>
+                </button>
+                <button class="tab employee-only" data-tab="refill" onclick="switchTab('refill')">
+                    <i class="fas fa-boxes-stacked"></i>
+                    <span>Refill</span>
+                </button>
+                <button class="tab employee-only" data-tab="serve" onclick="switchTab('serve')">
+                    <i class="fas fa-concierge-bell"></i>
+                    <span>Serve</span>
+                </button>
+                <button class="tab manager-only" data-tab="cashbox" onclick="switchTab('cashbox')">
+                    <i class="fas fa-cash-register"></i>
+                    <span>Cashbox</span>
+                </button>
+            </div>
+
+            <!-- Tab Content -->
+            <div class="tab-content">
+                <!-- Shop Tab -->
+                <div id="shop-tab" class="tab-panel active">
+                    <div class="panel-header">
+                        <h2><i class="fas fa-shopping-basket"></i> Available Items</h2>
+                        <div class="filter-buttons">
+                            <button class="filter-btn active" onclick="filterShop('all')">All</button>
+                            <button class="filter-btn" onclick="filterShop('drinks')">Drinks</button>
+                            <button class="filter-btn" onclick="filterShop('food')">Food</button>
+                        </div>
+                    </div>
+                    <div id="shop-items" class="items-grid">
+                        <!-- Items populated by JS -->
+                    </div>
+                </div>
+
+                <!-- Crafting Tab -->
+                <div id="crafting-tab" class="tab-panel">
+                    <div class="panel-header">
+                        <h2><i class="fas fa-flask"></i> Craft Items</h2>
+                        <div class="filter-buttons">
+                            <button class="filter-btn active" onclick="filterCrafting('all')">All</button>
+                            <button class="filter-btn" onclick="filterCrafting('drinks')">Drinks</button>
+                            <button class="filter-btn" onclick="filterCrafting('food')">Food</button>
+                        </div>
+                    </div>
+                    <div id="crafting-recipes" class="items-grid">
+                        <!-- Recipes populated by JS -->
+                    </div>
+                </div>
+
+                <!-- Storage Tab -->
+                <div id="storage-tab" class="tab-panel">
+                    <div class="panel-header">
+                        <h2><i class="fas fa-box-open"></i> Private Storage</h2>
+                    </div>
+                    <div id="storage-items" class="items-grid">
+                        <!-- Storage items populated by JS -->
+                    </div>
+                </div>
+
+                <!-- Refill Tab -->
+                <div id="refill-tab" class="tab-panel">
+                    <div class="panel-header">
+                        <h2><i class="fas fa-boxes-packing"></i> Refill Shop</h2>
+                        <p class="panel-description">Move items from storage to the public shop</p>
+                    </div>
+                    <div id="refill-items" class="items-grid">
+                        <!-- Refill items populated by JS -->
+                    </div>
+                </div>
+
+                <!-- Serve Tab -->
+                <div id="serve-tab" class="tab-panel">
+                    <div class="panel-header">
+                        <h2><i class="fas fa-concierge-bell"></i> Serve Items</h2>
+                        <p class="panel-description">Place crafted drinks and food on tables for customers</p>
+                    </div>
+                    <div class="serve-categories">
+                        <h3><i class="fas fa-wine-bottle"></i> Drinks</h3>
+                        <div id="serve-drinks" class="serve-grid">
+                            <!-- Populated by JS from craftable drinks -->
+                        </div>
+
+                        <h3><i class="fas fa-utensils"></i> Food</h3>
+                        <div id="serve-food" class="serve-grid">
+                            <!-- Populated by JS from craftable food -->
+                        </div>
+                    </div>
+                    <div class="serve-instructions">
+                        <h4><i class="fas fa-info-circle"></i> How to Place:</h4>
+                        <ul>
+                            <li><strong>Q/E</strong> - Rotate item</li>
+                            <li><strong>Hold E</strong> - Confirm placement</li>
+                            <li><strong>Backspace</strong> - Cancel</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Cashbox Tab -->
+                <div id="cashbox-tab" class="tab-panel">
+                    <div class="panel-header">
+                        <h2><i class="fas fa-coins"></i> Cashbox Management</h2>
+                    </div>
+                    <div class="cashbox-content">
+                        <div class="balance-card">
+                            <div class="balance-icon">
+                                <i class="fas fa-sack-dollar"></i>
+                            </div>
+                            <div class="balance-info">
+                                <span class="balance-label">Current Balance</span>
+                                <span id="cashbox-balance" class="balance-amount">$0.00</span>
+                            </div>
+                        </div>
+                        <div class="withdraw-section">
+                            <h3>Withdraw Funds</h3>
+                            <div class="input-group">
+                                <label for="withdraw-amount">Amount ($)</label>
+                                <input type="number" id="withdraw-amount" min="1" step="0.01"
+                                    placeholder="Enter amount">
+                            </div>
+                            <button class="btn btn-primary" onclick="withdrawCashbox()">
+                                <i class="fas fa-hand-holding-dollar"></i>
+                                Withdraw
+                            </button>
+                        </div>
+                        <div class="daily-stats">
+                            <h3>Today's Summary</h3>
+                            <div class="stats-grid">
+                                <div class="stat-card">
+                                    <i class="fas fa-receipt"></i>
+                                    <span class="stat-value" id="stat-sales">$0.00</span>
+                                    <span class="stat-label">Sales</span>
+                                </div>
+                                <div class="stat-card">
+                                    <i class="fas fa-heart"></i>
+                                    <span class="stat-value" id="stat-tips">$0.00</span>
+                                    <span class="stat-label">Tips</span>
+                                </div>
+                                <div class="stat-card">
+                                    <i class="fas fa-shopping-cart"></i>
+                                    <span class="stat-value" id="stat-count">0</span>
+                                    <span class="stat-label">Orders</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="transactions-section">
+                            <h3>Recent Transactions</h3>
+                            <div id="transactions-list" class="transactions-list">
+                                <!-- Transactions populated by JS -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="saloon-footer">
+                <span id="employee-badge" class="badge hidden">
+                    <i class="fas fa-id-badge"></i>
+                    Employee
+                </span>
+                <span class="footer-text">RSG Saloon Premium v1.0</span>
+            </div>
+        </div>
+
+        <!-- Purchase Modal -->
+        <div id="purchase-modal" class="modal hidden">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Purchase Item</h3>
+                    <button class="close-btn" onclick="closeModal('purchase-modal')">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="modal-item-preview">
+                        <img id="purchase-item-image" src="" alt="">
+                        <div class="item-details">
+                            <h4 id="purchase-item-name">Item Name</h4>
+                            <p id="purchase-item-price">$0.00 each</p>
+                            <p id="purchase-item-stock">Stock: 0</p>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label for="purchase-quantity">Quantity</label>
+                        <input type="number" id="purchase-quantity" min="1" value="1" onchange="updatePurchaseTotal()">
+                    </div>
+                    <div class="input-group">
+                        <label for="purchase-tip">Tip (optional)</label>
+                        <input type="number" id="purchase-tip" min="0" step="0.01" value="0"
+                            onchange="updatePurchaseTotal()">
+                    </div>
+                    <div class="total-display">
+                        <span>Total:</span>
+                        <span id="purchase-total">$0.00</span>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" onclick="closeModal('purchase-modal')">Cancel</button>
+                    <button class="btn btn-primary" onclick="confirmPurchase()">
+                        <i class="fas fa-check"></i>
+                        Confirm Purchase
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Refill Modal -->
+        <div id="refill-modal" class="modal hidden">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Refill Shop</h3>
+                    <button class="close-btn" onclick="closeModal('refill-modal')">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="modal-item-preview">
+                        <img id="refill-item-image" src="" alt="">
+                        <div class="item-details">
+                            <h4 id="refill-item-name">Item Name</h4>
+                            <p id="refill-item-storage">In Storage: 0</p>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label for="refill-quantity">Quantity to Add</label>
+                        <input type="number" id="refill-quantity" min="1" value="1">
+                    </div>
+                    <div class="input-group">
+                        <label for="refill-price">Price per Item ($)</label>
+                        <input type="number" id="refill-price" min="0.01" step="0.01" value="1.00">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" onclick="closeModal('refill-modal')">Cancel</button>
+                    <button class="btn btn-primary" onclick="confirmRefill()">
+                        <i class="fas fa-arrow-right"></i>
+                        Add to Shop
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+
+</html>

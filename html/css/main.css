@@ -1,0 +1,375 @@
+/* ============================================================================
+   RSG SALOON PREMIUM - MAIN STYLES
+   Premium Western/Parchment theme with glassmorphism
+   ============================================================================ */
+
+/* CSS Variables */
+:root {
+    /* Colors - Light Theme */
+    --bg-dark: #e8dec8;
+    /* Main Background (Beige) */
+    --bg-panel: #f4e9d9;
+    /* Panel Background (Lighter Cream) */
+    --bg-card: #fdfaf5;
+    /* Card Background (Paper White) */
+    --bg-hover: #e6dcc7;
+    /* Hover State */
+
+    --accent-gold: #8c734b;
+    /* Darker Gold/Bronze for light theme */
+    --accent-gold-light: #a68b5e;
+    --accent-gold-dark: #5e4d3b;
+
+    --text-primary: #2c241b;
+    /* Dark Brown/Black */
+    --text-secondary: #5c4d3c;
+    /* Medium Brown */
+    --text-muted: #8c7e70;
+    /* Light Brown */
+
+    --success: #5a7c65;
+    --success-light: #7b9c89;
+    --error: #8b4040;
+    --error-light: #ab6060;
+    --warning: #c9a227;
+    --info: #5a7c8b;
+
+    --border-color: #d6c6b0;
+    /* Subtle border */
+    --border-gold: #c2b095;
+    /* Stronger border */
+
+    /* Shadows */
+    --shadow-sm: 0 1px 2px rgba(44, 36, 27, 0.1);
+    --shadow-md: 0 4px 6px rgba(44, 36, 27, 0.1);
+    --shadow-lg: 0 10px 15px rgba(44, 36, 27, 0.15);
+    --shadow-gold: 0 0 0 transparent;
+    /* Removed glow for clean look */
+
+    /* Typography */
+    --font-heading: 'Cinzel', serif;
+    --font-body: 'Crimson Text', serif;
+
+    /* Spacing */
+    --spacing-xs: 0.25rem;
+    --spacing-sm: 0.5rem;
+    --spacing-md: 1rem;
+    --spacing-lg: 1.5rem;
+    --spacing-xl: 2rem;
+
+    /* Border Radius */
+    --radius-sm: 2px;
+    --radius-md: 4px;
+    --radius-lg: 6px;
+
+    /* Transitions */
+    --transition-fast: 0.15s ease;
+    --transition-normal: 0.3s ease;
+    --transition-slow: 0.5s ease;
+}
+
+/* Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-body);
+    background: transparent;
+    color: var(--text-primary);
+    overflow: hidden;
+    user-select: none;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* Main Container */
+#app {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: transparent;
+    /* backdrop-filter: blur(2px); Optionally keep slight blur if desired, but user wants clean */
+}
+
+.saloon-container {
+    width: 900px;
+    max-width: 95vw;
+    max-height: 85vh;
+    background: var(--bg-panel);
+    border: 2px solid var(--border-gold);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg), var(--shadow-gold);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    animation: slideIn 0.4s ease;
+}
+
+/* Header */
+.saloon-header {
+    flex-shrink: 0;
+    position: relative;
+    padding: var(--spacing-lg) var(--spacing-xl);
+    background: linear-gradient(135deg, #f4e9d9, #e8dec8);
+    border-bottom: 2px solid var(--border-gold);
+    text-align: center;
+}
+
+.header-content {
+    position: relative;
+    z-index: 1;
+}
+
+.header-icon {
+    font-size: 2rem;
+    color: var(--accent-gold);
+    margin-bottom: var(--spacing-sm);
+    text-shadow: none;
+}
+
+.saloon-header h1 {
+    font-family: var(--font-heading);
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    text-shadow: none;
+}
+
+.subtitle {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    font-style: italic;
+    margin-top: var(--spacing-xs);
+}
+
+.header-ornament {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 80px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border-gold), transparent);
+}
+
+.header-ornament.left {
+    left: var(--spacing-xl);
+}
+
+.header-ornament.right {
+    right: var(--spacing-xl);
+}
+
+.close-btn {
+    position: absolute;
+    top: var(--spacing-md);
+    right: var(--spacing-md);
+    width: 32px;
+    height: 32px;
+    border: 1px solid var(--border-color);
+    background: rgba(139, 64, 64, 0.1);
+    border-radius: var(--radius-sm);
+    color: var(--text-secondary);
+    font-size: 1rem;
+    cursor: pointer;
+    transition: var(--transition-fast);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.close-btn:hover {
+    background: var(--error);
+    color: white;
+    transform: none;
+    border-color: var(--error);
+}
+
+/* Tabs */
+.tabs-container {
+    flex-shrink: 0;
+    display: flex;
+    gap: var(--spacing-xs);
+    padding: var(--spacing-sm) var(--spacing-md);
+    background: var(--bg-hover);
+    border-bottom: 1px solid var(--border-color);
+    overflow-x: auto;
+}
+
+.tab {
+    flex: 1;
+    min-width: 80px;
+    padding: var(--spacing-sm) var(--spacing-md);
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+    color: var(--text-muted);
+    font-family: var(--font-heading);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: var(--transition-fast);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-xs);
+}
+
+.tab i {
+    font-size: 1rem;
+}
+
+.tab:hover {
+    background: var(--bg-hover);
+    color: var(--text-primary);
+}
+
+.tab.active {
+    background: var(--bg-panel);
+    color: var(--accent-gold);
+    border-bottom-color: transparent;
+    position: relative;
+}
+
+.tab.active::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--accent-gold);
+}
+
+/* Tab Content */
+.tab-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: var(--spacing-lg);
+}
+
+.tab-panel {
+    display: none;
+    animation: fadeIn 0.3s ease;
+}
+
+.tab-panel.active {
+    display: block;
+}
+
+/* Panel Header */
+.panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-lg);
+    flex-wrap: wrap;
+    gap: var(--spacing-md);
+}
+
+.panel-header h2 {
+    font-family: var(--font-heading);
+    font-size: 1.2rem;
+    color: var(--accent-gold);
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.panel-description {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin-top: var(--spacing-xs);
+}
+
+/* Filter Buttons */
+.filter-buttons {
+    display: flex;
+    gap: var(--spacing-xs);
+}
+
+.filter-btn {
+    padding: var(--spacing-xs) var(--spacing-md);
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    color: var(--text-secondary);
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: var(--transition-fast);
+}
+
+.filter-btn:hover {
+    background: var(--bg-hover);
+    color: var(--text-primary);
+}
+
+.filter-btn.active {
+    background: var(--accent-gold-dark);
+    color: var(--text-primary);
+    border-color: var(--accent-gold);
+}
+
+/* Items Grid */
+.items-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: var(--spacing-md);
+}
+
+/* Footer */
+.saloon-footer {
+    flex-shrink: 0;
+    padding: var(--spacing-sm) var(--spacing-lg);
+    background: var(--bg-hover);
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.footer-text {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+
+.badge {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    background: var(--success);
+    border-radius: var(--radius-sm);
+    font-size: 0.75rem;
+    color: white;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg-dark);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--accent-gold-dark);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--accent-gold);
+}
