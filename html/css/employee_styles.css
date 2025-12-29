@@ -1,0 +1,126 @@
+/* Employee List */
+.employees-list-container {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+}
+
+.list-header {
+    display: flex;
+    padding: var(--spacing-sm) var(--spacing-md);
+    background: var(--bg-hover);
+    border-bottom: 1px solid var(--border-color);
+    font-weight: 600;
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+}
+
+.list-header span {
+    flex: 1;
+}
+
+.list-header span:first-child {
+    flex: 1.5;
+    /* Name column wider */
+}
+
+.list-header span.text-right {
+    text-align: right;
+}
+
+.employee-row {
+    display: flex;
+    align-items: center;
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-bottom: 1px solid var(--border-color);
+    transition: background 0.15s ease;
+}
+
+.employee-row:last-child {
+    border-bottom: none;
+}
+
+.employee-row:hover {
+    background: rgba(140, 115, 75, 0.05);
+}
+
+.emp-name {
+    flex: 1.5;
+}
+
+.emp-name .name {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.emp-name .citizenid {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+
+.emp-rank {
+    flex: 1;
+}
+
+.rank-badge {
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    background: var(--bg-hover);
+    color: var(--text-secondary);
+    border: 1px solid var(--border-color);
+}
+
+.rank-badge.grade-3 {
+    /* Boss */
+    background: var(--accent-gold);
+    color: var(--bg-dark);
+    border-color: var(--accent-gold-dark);
+}
+
+.rank-badge.grade-2 {
+    /* Manager */
+    background: rgba(90, 124, 139, 0.2);
+    color: var(--info);
+    border-color: var(--info);
+}
+
+.emp-stats {
+    flex: 1;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+}
+
+.emp-actions {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+    gap: 4px;
+}
+
+.btn-icon {
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--border-color);
+    background: var(--bg-card);
+    border-radius: var(--radius-sm);
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.btn-icon:hover {
+    border-color: var(--accent-gold);
+    color: var(--accent-gold);
+    background: var(--bg-hover);
+}
+
+.btn-icon.btn-danger:hover {
+    border-color: var(--error);
+    color: var(--error);
+    background: rgba(139, 64, 64, 0.1);
+}

@@ -139,6 +139,7 @@ RSGCore.Functions.CreateCallback('rsg-saloon-premium:server:getSaloonData', func
     local data = {
         saloonId = saloonId,
         saloonName = saloonConfig.name,
+        citizenid = GetCitizenId(source),
         isEmployee = isEmployee,
         playerGrade = grade or 0,
         playerGradeLabel = GetGradeLabel(grade or 0),

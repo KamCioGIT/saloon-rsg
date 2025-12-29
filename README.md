@@ -149,6 +149,13 @@ rsg-saloon/
 
 ## 📝 Changelog
 
+### v2.2.0
+- 🔧 Fixed Staff UI: Hiring, Firing, and Promoting logic repaired.
+- 🔧 Fixed Serving: Drinks/Food no longer disappear without effect.
+- 🔧 Fixed Permissions: Helpers can now Refill storage (Configurable).
+- 🔧 Database: Improved data sync for employee list visibility.
+- 💅 UI: Improved visibility of staff list rows.
+
 ### v2.1.0
 - ✨ Activity logs for managers/bosses
 - ✨ Storage withdrawal to player inventory
@@ -173,6 +180,15 @@ rsg-saloon/
 ## 📄 License
 
 MIT License
+
+---
+
+## 🔧 Troubleshooting
+
+### Staff List Not Showing / Invisible Employees
+- Ensure you have executed the `installation/saloon_premium.sql` file to create the `saloon_premium_employees` table.
+- If an employee is hired but doesn't appear immediately, the scripts now force a database save, but a resource restart can also clear up desync issues.
+- Check server console for `[Saloon]` debug prints if `Config.Debug = true`.
 
 ---
 

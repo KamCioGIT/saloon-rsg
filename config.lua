@@ -1,7 +1,7 @@
 Config = {}
 
 
-Config.Debug = false
+Config.Debug = true
 Config.Keybind = 'J'                    -- Keybind to open menu (set to false for target only)
 Config.Img = 'nui://rsg-inventory/html/images/'  -- Path to item images
 
@@ -43,7 +43,7 @@ Config.Saloons = {
         -- Grade Requirements (0 = all, 1 = bartender+, 2 = manager+, 3 = owner only)
         grades = {
             crafting = 0,
-            refill = 1,
+            refill = 0,
             cashbox = 2,
             employees = 2,      -- Allow Managers to manage employees
         },
@@ -60,7 +60,7 @@ Config.Saloons = {
         showBlip = true,
         grades = {
             crafting = 0,
-            refill = 1,
+            refill = 0,
             cashbox = 2,
             employees = 3,
         },
@@ -76,7 +76,7 @@ Config.Saloons = {
         showBlip = true,
         grades = {
             crafting = 0,
-            refill = 1,
+            refill = 0,
             cashbox = 2,
             employees = 3,
         },
@@ -92,7 +92,7 @@ Config.Saloons = {
         showBlip = true,
         grades = {
             crafting = 0,
-            refill = 1,
+            refill = 0,
             cashbox = 2,
             employees = 2,
         },
@@ -108,7 +108,7 @@ Config.Saloons = {
         showBlip = true,
         grades = {
             crafting = 0,
-            refill = 1,
+            refill = 0,
             cashbox = 2,
             employees = 2,
         },
@@ -124,7 +124,7 @@ Config.Saloons = {
         showBlip = true,
         grades = {
             crafting = 0,
-            refill = 1,
+            refill = 0,
             cashbox = 2,
             employees = 2,
         },
@@ -140,7 +140,7 @@ Config.Saloons = {
         showBlip = true,
         grades = {
             crafting = 0,
-            refill = 1,
+            refill = 0,
             cashbox = 2,
             employees = 2,
         },
@@ -156,7 +156,7 @@ Config.Saloons = {
         showBlip = true,
         grades = {
             crafting = 0,
-            refill = 1,
+            refill = 0,
             cashbox = 2,
             employees = 2,
         },

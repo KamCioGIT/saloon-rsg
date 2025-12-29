@@ -74,6 +74,7 @@ RegisterNetEvent('rsg-saloon-premium:server:hirePlayer', function(targetId, salo
     
     -- Set target player's job
     TargetPlayer.Functions.SetJob(saloonId, grade)
+    TargetPlayer.Functions.Save() -- Force save to ensure SQL query finds updated job
     
     -- Notify both players
     local targetName = TargetPlayer.PlayerData.charinfo.firstname .. ' ' .. TargetPlayer.PlayerData.charinfo.lastname
@@ -117,10 +118,10 @@ RegisterNetEvent('rsg-saloon-premium:server:promotePlayer', function(targetCitiz
     local playerJob = Player.PlayerData.job.name
     local playerGrade = Player.PlayerData.job.grade.level
     
-    if playerJob ~= saloonId or playerGrade < 3 then
+    if playerJob ~= saloonId or playerGrade < 2 then
         TriggerClientEvent('ox_lib:notify', source, {
             type = 'error',
-            description = 'Only the Boss can promote employees.'
+            description = 'You must be at least a Manager to promote employees.'
         })
         return
     end
@@ -138,13 +139,24 @@ RegisterNetEvent('rsg-saloon-premium:server:promotePlayer', function(targetCitiz
              return
         end
         
-        if targetGrade >= 2 then
-            TriggerClientEvent('ox_lib:notify', source, { type = 'error', description = 'Cannot promote further (Max: Manager).' })
-            return
+        -- Check promotion limits based on rank
+        if playerGrade == 3 then
+            -- Boss can promote up to Boss (create co-owner)
+            if targetGrade >= 3 then
+                TriggerClientEvent('ox_lib:notify', source, { type = 'error', description = 'Cannot promote further (Max Rank).' })
+                return
+            end
+        else
+            -- Managers can only promote to ranks lower than themselves
+            if targetGrade >= (playerGrade - 1) then
+                 TriggerClientEvent('ox_lib:notify', source, { type = 'error', description = 'Cannot promote to a rank equal or higher than yours.' })
+                 return
+            end
         end
         
         local newGrade = targetGrade + 1
         TargetPlayer.Functions.SetJob(saloonId, newGrade)
+        TargetPlayer.Functions.Save() -- Force save
         
         TriggerClientEvent('ox_lib:notify', source, {
             type = 'success',
@@ -221,6 +233,7 @@ RegisterNetEvent('rsg-saloon-premium:server:firePlayer', function(targetCitizenI
         
         -- Set to unemployed
         TargetPlayer.Functions.SetJob('unemployed', 0)
+        TargetPlayer.Functions.Save() -- Force save
         
         TriggerClientEvent('ox_lib:notify', TargetPlayer.PlayerData.source, {
             type = 'error',
@@ -282,6 +295,10 @@ RSGCore.Functions.CreateCallback('rsg-saloon-premium:server:getEmployees', funct
         WHERE JSON_UNQUOTE(JSON_EXTRACT(p.job, '$.name')) = ?
         ORDER BY JSON_EXTRACT(p.job, '$.grade.level') DESC
     ]], { saloonId, saloonId })
+
+    if Config.Debug then
+        print('[Saloon] GetEmployees for '..saloonId..': Found '..#employees..' records')
+    end
     
     -- Parse charinfo and job to get names and grades
     local result = {}
@@ -289,6 +306,11 @@ RSGCore.Functions.CreateCallback('rsg-saloon-premium:server:getEmployees', funct
         local charinfo = json.decode(emp.charinfo or '{}')
         local jobData = json.decode(emp.job or '{}')
         local grade = jobData.grade and jobData.grade.level or 0
+        
+        if Config.Debug then
+            print('[Saloon] Processing employee: '..(charinfo.firstname or 'Unknown')..' grade: '..grade)
+        end
+        
         table.insert(result, {
             citizenid = emp.citizenid,
             firstname = charinfo.firstname or 'Unknown',

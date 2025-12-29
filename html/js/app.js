@@ -8,6 +8,7 @@ const RESOURCE_NAME = 'rsg-saloon';
 let state = {
     saloonId: null,
     saloonName: '',
+    citizenid: null,
     isEmployee: false,
     playerGrade: 0,
     playerGradeLabel: '',
@@ -62,6 +63,7 @@ function openMenu(data) {
     // Update state
     state.saloonId = data.saloonId;
     state.saloonName = data.saloonName;
+    state.citizenid = data.citizenid;
     state.isEmployee = data.isEmployee;
     state.playerGrade = data.playerGrade;
     state.playerGradeLabel = data.playerGradeLabel || `Grade ${state.playerGrade}`;
@@ -681,47 +683,64 @@ function updateEmployeesList(employees) {
     }
 
     container.innerHTML = employees.map(emp => {
-        const isSelf = false; // Logic to check if this is the current player
-        const canManage = state.playerGrade > emp.grade && state.playerGrade >= 2;
-        const canPromote = state.playerGrade === 3 && emp.grade < 2; // Only Boss can promote
-        const canFire = state.playerGrade === 3; // Only Boss can fire
+        try {
+            const isSelf = emp.citizenid === state.citizenid;
 
-        let actions = '';
-        if (canManage && !isSelf) {
-            if (canPromote) {
-                actions += `
-                    <button class="btn-icon" title="Promote" onclick="promoteEmployee('${emp.citizenid}')">
-                        <i class="fas fa-arrow-up"></i>
-                    </button>
-                `;
+            const pGrade = Number(state.playerGrade) || 0;
+            const eGrade = Number(emp.grade) || 0;
+
+            // Boss (3) can manage everyone. Managers (2) can manage anyone below them.
+            const canManage = (pGrade === 3) || (pGrade >= 2 && pGrade > eGrade);
+
+            // Promotion: Boss can promote anyone < 3. Managers promote < 1 (grade < pGrade - 1)
+            const canPromote = (pGrade === 3 && eGrade < 3) || (pGrade >= 2 && eGrade < (pGrade - 1));
+
+            // Fire: Only Boss
+            const canFire = pGrade === 3;
+
+            let actions = '';
+            if (canManage && !isSelf) {
+                if (canPromote) {
+                    actions += `
+                        <button class="btn-icon" title="Promote" onclick="promoteEmployee('${emp.citizenid}')">
+                            <i class="fas fa-arrow-up"></i>
+                        </button>
+                    `;
+                }
+                if (canFire) {
+                    actions += `
+                        <button class="btn-icon btn-danger" title="Fire" onclick="fireEmployee('${emp.citizenid}')">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    `;
+                }
             }
-            if (canFire) {
-                actions += `
-                    <button class="btn-icon btn-danger" title="Fire" onclick="fireEmployee('${emp.citizenid}')">
-                        <i class="fas fa-trash"></i>
-                    </button>
-                `;
-            }
+
+            const salesTotal = parseFloat(emp.salesTotal) || 0;
+            const itemsCrafted = parseInt(emp.itemsCrafted) || 0;
+
+            return `
+                <div class="employee-row">
+                    <div class="emp-name">
+                        <div class="name">${emp.firstname || 'Unknown'} ${emp.lastname || ''}</div>
+                        <div class="citizenid">${emp.citizenid || 'N/A'}</div>
+                    </div>
+                    <div class="emp-rank">
+                        <span class="rank-badge grade-${eGrade}">${emp.gradeLabel || 'Unknown'}</span>
+                    </div>
+                    <div class="emp-stats text-right">
+                        <div><i class="fas fa-hammer"></i> ${itemsCrafted}</div>
+                        <div><i class="fas fa-dollar-sign"></i> ${salesTotal.toFixed(2)}</div>
+                    </div>
+                    <div class="emp-actions text-right">
+                        ${actions}
+                    </div>
+                </div>
+            `;
+        } catch (err) {
+            console.error('Error rendering row:', err);
+            return '<div class="employee-row error">Error</div>';
         }
-
-        return `
-            <div class="employee-row">
-                <div class="emp-name">
-                    <div class="name">${emp.firstname} ${emp.lastname}</div>
-                    <div class="citizenid">${emp.citizenid}</div>
-                </div>
-                <div class="emp-rank">
-                    <span class="rank-badge grade-${emp.grade}">${emp.gradeLabel}</span>
-                </div>
-                <div class="emp-stats text-right">
-                    <div><i class="fas fa-hammer"></i> ${emp.itemsCrafted}</div>
-                    <div><i class="fas fa-dollar-sign"></i> ${emp.salesTotal.toFixed(2)}</div>
-                </div>
-                <div class="emp-actions text-right">
-                    ${actions}
-                </div>
-            </div>
-        `;
     }).join('');
 }
 
@@ -744,7 +763,7 @@ function fireEmployee(citizenid) {
             targetId: citizenid
         })
     }).then(() => {
-        getEmployees(); // Refresh list
+        setTimeout(getEmployees, 500); // Wait for server DB update
     });
 }
 
@@ -757,7 +776,7 @@ function promoteEmployee(citizenid) {
             targetId: citizenid
         })
     }).then(() => {
-        getEmployees(); // Refresh list
+        setTimeout(getEmployees, 500); // Wait for server DB update
     });
 }
 
@@ -794,12 +813,13 @@ function hirePlayerFromModal(targetId) {
         method: 'POST',
         body: JSON.stringify({
             saloonId: state.saloonId,
-            targetId: targetId
+            targetId: targetId,
+            grade: 0 // Default to Helper
         })
+    }).then(() => {
+        closeModal('hire-modal');
+        setTimeout(getEmployees, 500);
     });
-    closeModal('hire-modal');
-    // Refresh employee list after a delay
-    setTimeout(getEmployees, 1000);
 }
 
 
