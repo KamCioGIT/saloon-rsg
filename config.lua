@@ -1,7 +1,7 @@
 Config = {}
 
 
-Config.Debug = true
+Config.Debug = false
 Config.Keybind = 'J'                    -- Keybind to open menu (set to false for target only)
 Config.Img = 'nui://rsg-inventory/html/images/'  -- Path to item images
 

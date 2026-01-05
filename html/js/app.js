@@ -3,7 +3,8 @@
 
 
 // Resource name for NUI callbacks
-const RESOURCE_NAME = 'rsg-saloon';
+// Resource name for NUI callbacks
+const RESOURCE_NAME = GetParentResourceName();
 
 let state = {
     saloonId: null,

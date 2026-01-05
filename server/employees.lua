@@ -292,13 +292,7 @@ RSGCore.Functions.CreateCallback('rsg-saloon-premium:server:getEmployees', funct
                COALESCE(e.tips_earned, 0) as tips_earned
         FROM players p
         LEFT JOIN saloon_premium_employees e ON p.citizenid = e.citizenid AND e.saloon = ?
-        WHERE JSON_UNQUOTE(JSON_EXTRACT(p.job, '$.name')) = ?
-        ORDER BY JSON_EXTRACT(p.job, '$.grade.level') DESC
     ]], { saloonId, saloonId })
-
-    if Config.Debug then
-        print('[Saloon] GetEmployees for '..saloonId..': Found '..#employees..' records')
-    end
     
     -- Parse charinfo and job to get names and grades
     local result = {}
@@ -306,10 +300,6 @@ RSGCore.Functions.CreateCallback('rsg-saloon-premium:server:getEmployees', funct
         local charinfo = json.decode(emp.charinfo or '{}')
         local jobData = json.decode(emp.job or '{}')
         local grade = jobData.grade and jobData.grade.level or 0
-        
-        if Config.Debug then
-            print('[Saloon] Processing employee: '..(charinfo.firstname or 'Unknown')..' grade: '..grade)
-        end
         
         table.insert(result, {
             citizenid = emp.citizenid,

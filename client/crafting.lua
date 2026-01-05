@@ -82,7 +82,7 @@ RegisterNUICallback('startCraft', function(data, cb)
     -- Reopen menu after short delay
     Wait(500)
     if not isCrafting then
-        exports['rsg-saloon-premium']:OpenSaloonMenu(saloonId)
+        exports[GetCurrentResourceName()]:OpenSaloonMenu(saloonId)
     end
 end)
 
