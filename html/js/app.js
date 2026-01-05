@@ -109,7 +109,7 @@ function openMenu(data) {
     document.getElementById('app').classList.remove('hidden');
 
     // Send ready callback
-    fetch(`https://${RESOURCE_NAME}/ready`, {
+    fetch(`https://rsg-saloon/ready`, {
         method: 'POST',
         body: JSON.stringify({})
     });
@@ -137,7 +137,7 @@ function refreshData(data) {
 function closeMenu() {
     document.getElementById('app').classList.add('hidden');
 
-    fetch(`https://${RESOURCE_NAME}/closeUI`, {
+    fetch(`https://rsg-saloon/closeUI`, {
         method: 'POST',
         body: JSON.stringify({})
     });
@@ -324,7 +324,7 @@ function filterCrafting(filter) {
 function startCrafting(itemName) {
     closeMenu();
 
-    fetch(`https://${RESOURCE_NAME}/startCraft`, {
+    fetch(`https://rsg-saloon/startCraft`, {
         method: 'POST',
         body: JSON.stringify({
             item: itemName,
@@ -406,7 +406,7 @@ function renderServeItems() {
 function serveDrink(model, label, itemName) {
     closeMenu();
 
-    fetch(`https://${RESOURCE_NAME}/serveDrink`, {
+    fetch(`https://rsg-saloon/serveDrink`, {
         method: 'POST',
         body: JSON.stringify({
             model: model,
@@ -420,7 +420,7 @@ function serveDrink(model, label, itemName) {
 function serveFood(model, label, itemName) {
     closeMenu();
 
-    fetch(`https://${RESOURCE_NAME}/serveFood`, {
+    fetch(`https://rsg-saloon/serveFood`, {
         method: 'POST',
         body: JSON.stringify({
             model: model,
@@ -479,7 +479,7 @@ function confirmWithdraw() {
 
     const quantity = parseInt(document.getElementById('withdraw-quantity').value) || 1;
 
-    fetch(`https://${RESOURCE_NAME}/withdrawStorage`, {
+    fetch(`https://rsg-saloon/withdrawStorage`, {
         method: 'POST',
         body: JSON.stringify({
             saloonId: state.saloonId,
@@ -569,7 +569,7 @@ function withdrawCashbox() {
         return;
     }
 
-    fetch(`https://${RESOURCE_NAME}/withdrawCashbox`, {
+    fetch(`https://rsg-saloon/withdrawCashbox`, {
         method: 'POST',
         body: JSON.stringify({
             saloonId: state.saloonId,
@@ -587,7 +587,7 @@ function depositCashbox() {
         return;
     }
 
-    fetch(`https://${RESOURCE_NAME}/depositCashbox`, {
+    fetch(`https://rsg-saloon/depositCashbox`, {
         method: 'POST',
         body: JSON.stringify({
             saloonId: state.saloonId,
@@ -635,7 +635,7 @@ function confirmPurchase() {
     const quantity = parseInt(document.getElementById('purchase-quantity').value) || 1;
     const tip = parseFloat(document.getElementById('purchase-tip').value) || 0;
 
-    fetch(`https://${RESOURCE_NAME}/purchaseItem`, {
+    fetch(`https://rsg-saloon/purchaseItem`, {
         method: 'POST',
         body: JSON.stringify({
             saloonId: state.saloonId,
@@ -746,7 +746,7 @@ function updateEmployeesList(employees) {
 }
 
 function getEmployees() {
-    fetch(`https://${RESOURCE_NAME}/getEmployees`, {
+    fetch(`https://rsg-saloon/getEmployees`, {
         method: 'POST',
         body: JSON.stringify({
             saloonId: state.saloonId
@@ -757,7 +757,7 @@ function getEmployees() {
 }
 
 function fireEmployee(citizenid) {
-    fetch(`https://${RESOURCE_NAME}/firePlayer`, {
+    fetch(`https://rsg-saloon/firePlayer`, {
         method: 'POST',
         body: JSON.stringify({
             saloonId: state.saloonId,
@@ -770,7 +770,7 @@ function fireEmployee(citizenid) {
 
 function promoteEmployee(citizenid) {
     // Logic for promotion would go here
-    fetch(`https://${RESOURCE_NAME}/promotePlayer`, {
+    fetch(`https://rsg-saloon/promotePlayer`, {
         method: 'POST',
         body: JSON.stringify({
             saloonId: state.saloonId,
@@ -786,7 +786,7 @@ function openHireModal() {
     list.innerHTML = '<div class="loader"><i class="fas fa-spinner fa-spin"></i> Searching...</div>';
     document.getElementById('hire-modal').classList.remove('hidden');
 
-    fetch(`https://${RESOURCE_NAME}/getNearbyPlayers`, {
+    fetch(`https://rsg-saloon/getNearbyPlayers`, {
         method: 'POST',
         body: JSON.stringify({})
     }).then(resp => resp.json()).then(players => {
@@ -810,7 +810,7 @@ function openHireModal() {
 }
 
 function hirePlayerFromModal(targetId) {
-    fetch(`https://${RESOURCE_NAME}/hirePlayer`, {
+    fetch(`https://rsg-saloon/hirePlayer`, {
         method: 'POST',
         body: JSON.stringify({
             saloonId: state.saloonId,
@@ -831,7 +831,7 @@ function confirmRefill() {
     const quantity = parseInt(document.getElementById('refill-quantity').value) || 1;
     const price = parseFloat(document.getElementById('refill-price').value) || 1;
 
-    fetch(`https://${RESOURCE_NAME}/refillShop`, {
+    fetch(`https://rsg-saloon/refillShop`, {
         method: 'POST',
         body: JSON.stringify({
             saloonId: state.saloonId,
@@ -849,7 +849,7 @@ function confirmRefill() {
 // ============================================================================
 
 function getManagerLogs() {
-    fetch(`https://${RESOURCE_NAME}/getLogs`, {
+    fetch(`https://rsg-saloon/getLogs`, {
         method: 'POST',
         body: JSON.stringify({
             saloonId: state.saloonId
