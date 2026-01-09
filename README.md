@@ -123,6 +123,8 @@ Copy item PNGs to:
 ### Customers
 1. **Shop**: Browse and purchase items
 2. **Pickup**: Interact with placed table items
+    - **Consume**: Drink/Eat immediately
+    - **Take**: Pick up item into inventory
 
 ---
 
