@@ -249,6 +249,14 @@ RegisterNetEvent('rsg-saloon-premium:client:createPlacedProp', function(data)
             end,
         },
         {
+            name = 'take_' .. propId,
+            icon = 'fas fa-hand-holding',
+            label = 'Take',
+            onSelect = function()
+                TriggerServerEvent('rsg-saloon-premium:server:takePlacedProp', propId)
+            end,
+        },
+        {
             name = 'remove_' .. propId,
             icon = 'fas fa-trash',
             label = 'Remove',

@@ -222,6 +222,69 @@ RegisterNetEvent('rsg-saloon-premium:server:removePlacedProp', function(propId)
 end)
 
 -- ============================================================================
+-- TAKE PLACED PROP (Add to inventory)
+-- ============================================================================
+
+RegisterNetEvent('rsg-saloon-premium:server:takePlacedProp', function(propId)
+    local source = source
+    local Player = RSGCore.Functions.GetPlayer(source)
+    
+    if not Player then return end
+    
+    local propData = placedProps[propId]
+    if not propData then
+        TriggerClientEvent('ox_lib:notify', source, {
+            type = 'error',
+            description = 'Item no longer exists.'
+        })
+        return
+    end
+
+    -- Determine item name from extraData
+    local itemName = propData.extraData and propData.extraData.itemName
+    
+    -- Fallback for older props or missing data (optional logic)
+    if not itemName then
+        if propData.propType == 'drink' then
+            itemName = 'consumable_beer' -- Default fallback?
+        elseif propData.propType == 'food' then
+            itemName = 'consumable_chili'
+        else
+             TriggerClientEvent('ox_lib:notify', source, {
+                type = 'error',
+                description = 'Cannot take this item.'
+            })
+            return
+        end
+    end
+    
+    -- Attempt to add item to inventory
+    if Player.Functions.AddItem(itemName, 1) then
+        TriggerClientEvent('inventory:client:ItemBox', source, RSGCore.Shared.Items[itemName], "add")
+        
+        -- Remove from placed props list
+        placedProps[propId] = nil
+        
+        -- Remove prop from all clients
+        TriggerClientEvent('rsg-saloon-premium:client:removePlacedProp', -1, propId)
+        
+        TriggerClientEvent('ox_lib:notify', source, {
+            type = 'success',
+            description = 'You took the item.'
+        })
+        
+        if Config.Debug then
+            print('[Saloon] Prop taken:', propId, 'Item:', itemName, 'by', Player.PlayerData.citizenid)
+        end
+    else
+        TriggerClientEvent('ox_lib:notify', source, {
+            type = 'error',
+            description = 'Inventory full!'
+        })
+    end
+end)
+
+-- ============================================================================
 -- SYNC PROPS ON PLAYER JOIN
 -- ============================================================================
 
