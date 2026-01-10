@@ -285,6 +285,7 @@ RSGCore.Functions.CreateCallback('rsg-saloon-premium:server:getEmployees', funct
     end
     
     -- Get all employees for this saloon from players table
+    local jobPattern = '%"name":"' .. saloonId .. '"%'
     local employees = MySQL.query.await([[
         SELECT p.citizenid, p.charinfo, p.job,
                COALESCE(e.items_crafted, 0) as items_crafted,
@@ -292,7 +293,8 @@ RSGCore.Functions.CreateCallback('rsg-saloon-premium:server:getEmployees', funct
                COALESCE(e.tips_earned, 0) as tips_earned
         FROM players p
         LEFT JOIN saloon_premium_employees e ON p.citizenid = e.citizenid AND e.saloon = ?
-    ]], { saloonId, saloonId })
+        WHERE p.job LIKE ?
+    ]], { saloonId, jobPattern })
     
     -- Parse charinfo and job to get names and grades
     local result = {}
