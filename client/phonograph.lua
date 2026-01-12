@@ -47,7 +47,7 @@ function StartPlacingPhonograph()
     SetEntityAlpha(ghostProp, 150, false)
     SetEntityCollision(ghostProp, false, false)
     
-    lib.showTextUI('[LEFT/RIGHT] Rotate | [E] Place | [BACKSPACE] Cancel')
+    lib.showTextUI('[LEFT/RIGHT] Rotate | [ALT] Place | [BACKSPACE] Cancel')
     
     while isPlacing do
         Wait(0)
